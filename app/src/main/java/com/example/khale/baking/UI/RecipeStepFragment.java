@@ -39,8 +39,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import okhttp3.internal.Util;
-
 public class RecipeStepFragment extends Fragment{
 
     private SimpleExoPlayerView simpleExoPlayerView;
@@ -81,7 +79,7 @@ public class RecipeStepFragment extends Fragment{
         simpleExoPlayerView = (SimpleExoPlayerView) view.findViewById(R.id.playerView);
         simpleExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
 
-        videoUrl = step.getVideoUrl();
+        videoUrl = step.getVideoURL();
         String imageUrl = step.getThumbnailUrl();
 
         if(!TextUtils.isEmpty(imageUrl)){
@@ -92,7 +90,7 @@ public class RecipeStepFragment extends Fragment{
         }
 
         if(!TextUtils.isEmpty(videoUrl)){
-            initializePlayer(Uri.parse(step.getVideoUrl()));
+            initializePlayer(Uri.parse(step.getVideoURL()));
         }else {
             simpleExoPlayer = null;
             simpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(300, 300));

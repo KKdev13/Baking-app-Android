@@ -8,7 +8,7 @@ public class Step implements Parcelable {
     private int id;
     private String shortDescription;
     private String description;
-    private String videoUrl;
+    private String videoURL;
     private String thumbnailUrl;
 
     //getters and setters
@@ -37,12 +37,12 @@ public class Step implements Parcelable {
         this.description = description;
     }
 
-    public String getVideoUrl() {
-        return videoUrl;
+    public String getVideoURL() {
+        return videoURL;
     }
 
-    public void setVideoUrl(String videoUrl){
-        this.videoUrl = videoUrl;
+    public void setVideoURL(String videoURL){
+        this.videoURL = videoURL;
     }
 
     public String getThumbnailUrl() {
@@ -59,7 +59,7 @@ public class Step implements Parcelable {
         this.id = parcel.readInt();
         this.shortDescription = parcel.readString();
         this.description = parcel.readString();
-        this.videoUrl = parcel.readString();
+        this.videoURL = parcel.readString();
         this.thumbnailUrl = parcel.readString();
     }
     public Step(){
@@ -76,7 +76,7 @@ public class Step implements Parcelable {
         dest.writeInt(this.id);
         dest.writeString(this.shortDescription);
         dest.writeString(this.description);
-        dest.writeString(this.videoUrl);
+        dest.writeString(this.videoURL);
         dest.writeString(this.thumbnailUrl);
     }
 

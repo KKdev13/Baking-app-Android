@@ -18,7 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.DetailRecipeActivity"/>
+        <activity android:name=".UI.DetailRecipeActivity"
+                  android:theme="@style/AppTheme"
+                  android:parentActivityName=".UI.MainRecipeActivity"
+        />
 
         <receiver android:name=".Widget.BakingWidgetProvider">
             <intent-filter>
