@@ -55,6 +55,7 @@ public class RecipeStepFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        //boolean isPlayWhenReady;
         View view = inflater.inflate(R.layout.recipe_step_detail_fragment, container, false);
         TextView textView = (TextView) view.findViewById(R.id.recipe_step_text);
 
@@ -62,9 +63,16 @@ public class RecipeStepFragment extends Fragment{
             step = savedInstanceState.getParcelable(SELECTED_STEP);
             steps = savedInstanceState.getParcelableArrayList(ALL_STEPS);
             playerPosition = savedInstanceState.getLong("player_position");
+            //saving the play state, so that the video is resumed or paused accordingly when the device is rotated
+            isPlaying = simpleExoPlayer.getPlayWhenReady();
+            savedInstanceState.putBoolean("playerState", isPlaying);
+            simpleExoPlayer.setPlayWhenReady(isPlaying);
         }else {
             step = getArguments().getParcelable(SELECTED_STEP);
             steps = getArguments().getParcelableArrayList(ALL_STEPS);
+
+
+
         }
 
         if(step == null){
