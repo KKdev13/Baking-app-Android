@@ -49,7 +49,8 @@ public class RecipeStepFragment extends Fragment{
     private String videoUrl;
     private int position;
     private long playerPosition;
-    public static boolean isPlaying;
+    public  static boolean isPlaying;
+    //public static boolean isPlayWhenReady;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
@@ -62,16 +63,13 @@ public class RecipeStepFragment extends Fragment{
         if(savedInstanceState != null){
             step = savedInstanceState.getParcelable(SELECTED_STEP);
             steps = savedInstanceState.getParcelableArrayList(ALL_STEPS);
+            isPlaying = savedInstanceState.getBoolean("player_state");
             playerPosition = savedInstanceState.getLong("player_position");
-            //saving the play state, so that the video is resumed or paused accordingly when the device is rotated
-            isPlaying = simpleExoPlayer.getPlayWhenReady();
-            savedInstanceState.putBoolean("playerState", isPlaying);
-            simpleExoPlayer.setPlayWhenReady(isPlaying);
+
+
         }else {
             step = getArguments().getParcelable(SELECTED_STEP);
             steps = getArguments().getParcelableArrayList(ALL_STEPS);
-
-
 
         }
 
@@ -89,6 +87,15 @@ public class RecipeStepFragment extends Fragment{
 
         videoUrl = step.getVideoURL();
         String imageUrl = step.getThumbnailUrl();
+
+
+
+        //saving the play state, so that the video is resumed or paused accordingly when the device is rotated
+        /*if(simpleExoPlayer != null){
+            //isPlaying = simpleExoPlayer.getPlayWhenReady();
+            //savedInstanceState.putBoolean("playerState", isPlaying);
+            //simpleExoPlayer.setPlayWhenReady(isPlaying);
+        }*/
 
         if(!TextUtils.isEmpty(imageUrl)){
             Uri builtUri = Uri.parse(imageUrl).buildUpon().build();
@@ -136,6 +143,16 @@ public class RecipeStepFragment extends Fragment{
         return view;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle currentState) {
+        super.onSaveInstanceState(currentState);
+        currentState.putParcelable(SELECTED_STEP, step);
+        currentState.putParcelableArrayList(ALL_STEPS, steps);
+        currentState.putLong("player_position", playerPosition);
+        currentState.putBoolean("player_state", isPlaying);
+
+    }
+
 
     @Override
     public void onDestroy() {
@@ -148,6 +165,7 @@ public class RecipeStepFragment extends Fragment{
         super.onPause();
         if(simpleExoPlayer != null){
             playerPosition = simpleExoPlayer.getCurrentPosition();
+            isPlaying = simpleExoPlayer.getPlayWhenReady();
             releasePlayer();
         }
     }
@@ -196,16 +214,11 @@ public class RecipeStepFragment extends Fragment{
         }
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle currentState) {
-        super.onSaveInstanceState(currentState);
-        currentState.putParcelable(SELECTED_STEP, step);
-        currentState.putParcelableArrayList(ALL_STEPS, steps);
-        currentState.putLong("player_position", playerPosition);
-    }
+
 
     private void releasePlayer(){
         if(simpleExoPlayer != null){
+            simpleExoPlayer.setPlayWhenReady(false);
             simpleExoPlayer.stop();
             simpleExoPlayer.release();
             simpleExoPlayer = null;
